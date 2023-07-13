@@ -3,8 +3,12 @@ import exphbs from "express-handlebars";
 
 const app = express();
 
-app.engine("handlebars", exphbs.engine());
-app.set("view engine", "handlebars");
+app.use(express.static("public"))
+
+app.engine("hbs", exphbs.engine({
+    extname: ".hbs"
+}));
+app.set("view engine", ".hbs");
 
 // Routing
 app.get("/", (req, res) => {
@@ -12,11 +16,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-  res.render("about", {title: "about"});
+  res.render("about", {
+    title: "about",
+    style: "about.css"
+});
 });
 
 app.get("/names", (req, res) => {
   res.render("names", {
+    style: "names.css",
     name: "Mariano",
     age: 22,
     country: "argentina",
@@ -61,8 +69,32 @@ app.get("/each/contact", (req, res)=>{
                     country: "alemania"
                 }
             },
-        ]
+        ],
+        style: "contact.css",
 
+    })
+})
+
+app.get("/look", (req, res)=>{
+    res.render("look", {
+        style: "look.css",
+        user: {
+            name: "mariano123",
+            age: 20,
+            adress: "kahghsdasaA"
+        },
+        contact: [
+            "contactOne",
+            "contactTwo",
+            "contactThree",
+        ],
+        datos: {
+            nombre: "Juan",
+            direccion: {
+              calle: "123 Calle Principal",
+              ciudad: "Ciudad de México"
+            }
+        }
     })
 })
 
